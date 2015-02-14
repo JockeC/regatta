@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" ng-app="blogs">
+  <head>
+    <title>XML e2e testing</title>
+  </head>
+  <body ng-controller="BlogsCtrl">
+    <ul class="blogs">
+      <li ng-repeat="blog in blogs">{{blog._id}} - {{blog._name}}</li>
+    </ul>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/x2js/xml2json.js"></script>
+    <script src="lib/angular-xml/angular-xml.js"></script>
+    <script>
+        var app = angular
+        .module('blogs', ['xml'])
+        .config(function ($httpProvider) {
+          $httpProvider.interceptors.push('xmlHttpInterceptor');
+        })
+        .controller('BlogsCtrl', function ($scope, $http) {
+          $http.get('xmlSpec.xml').success(function (data) {
+            $scope.blogs = data.blogs.blog;
+          });
+        });
+    </script>
+  </body>
+</html>
+

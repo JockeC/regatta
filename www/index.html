@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" ng-app="blogs">
+  <head>
+    <title>XML e2e testing</title>
+  </head>
+  <body ng-controller="BlogsCtrl">
+    <ul class="blogs">
+      <li ng-repeat="blog in blogs">{{blog._id}} - {{blog._name}}</li>
+    </ul>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/x2js/xml2json.js"></script>
+    <script src="lib/angular-xml/angular-xml.js"></script>
+    <script>
+        var app = angular
+        .module('blogs', ['xml'])
+        .config(function ($httpProvider) {
+            $httpProvider.interceptors.push('xmlHttpInterceptor');
+            delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            $httpProvider.defaults.useXDomain = true;
+        })
+        .controller('BlogsCtrl', function ($scope, $http) {
+                return $http({
+                    url:"http://vvor-org.virtualregatta.com/core/Service/ServiceCaller.php?service=GetUser&id_user=2649649&lang=EN&light=1&clientVersion=5.2.32&checksum=919e016b39d71f1160f7fd5403c68ff2c32bbd2d",
+                    method:"GET"
+                });
+          // $http.get('http://vvor-org.virtualregatta.com/core/Service/ServiceCaller.php?service=GetUser&id_user=2649649&lang=EN&light=1&clientVersion=5.2.32&checksum=919e016b39d71f1160f7fd5403c68ff2c32bbd2d').success(function (data) {
+          //  $scope.blogs = data.blogs.blog;
+        });
+    </script>
+  </body>
+</html>
+
